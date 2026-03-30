@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Клуб "Затесь" — 15 лет | Галерея попечительского совета</title>
+    <!-- Bootstrap 5 CSS (русская локализация) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 (иконки) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: элегантный шрифт -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9f5eb;
+            color: #2e241f;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .serif-heading {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+
+        /* герой-секция с главным фото (Валентина Майстренко) максимальная ширина */
+        .hero-founder {
+            background: #2c241e;
+            padding: 1rem 0 0.5rem 0;
+            margin-bottom: 2rem;
+        }
+        .hero-img-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .hero-img-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 20px 30px -10px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+        }
+        .hero-caption {
+            background: rgba(44, 36, 30, 0.85);
+            backdrop-filter: blur(4px);
+            padding: 12px 20px;
+            border-radius: 0 0 16px 16px;
+            color: #fff3e6;
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-align: center;
+            width: 100%;
+        }
+        .hero-caption strong {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: #f7d9a0;
+        }
+
+        /* стили карточек-галереи */
+        .gallery-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            transition: all 0.25s ease;
+            cursor: pointer;
+            border: 1px solid #e2d9cf;
+        }
+        .gallery-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.15);
+        }
+        /*   .gallery-img {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            object-fit: cover;
+            background: #e9e2d8;
+            transition: 0.2s;
+        } */
+.gallery-img {
+    width: 100%;
+    height: auto;
+    min-height: 200px;
+    max-height: 350px;
+    object-fit: contain; /* изменяем с cover на contain */
+    background: #e9e2d8;
+    transition: 0.2s;
+    display: block;
+}
+
+
+
+        .card-body-custom {
+            padding: 1rem 1.2rem 1.2rem;
+            background: #ffffff;
+        }
+        .person-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            font-family: 'Playfair Display', serif;
+            color: #3a2a23;
+            margin-bottom: 0.3rem;
+        }
+        .person-regalia {
+            font-size: 0.85rem;
+            color: #6b4c3c;
+            line-height: 1.35;
+        }
+        /* секция памяти */
+        .memory-section {
+            background: #ede5db;
+            border-radius: 32px;
+            padding: 2rem 1rem;
+            margin: 2.5rem 0;
+        }
+        .memory-card {
+            background: #fffcf8;
+            border-left: 6px solid #b28b6f;
+        }
+        /* модальное окно (презентация fullscreen) */
+        .fullscreen-modal .modal-dialog {
+            max-width: none;
+            margin: 0;
+        }
+        .fullscreen-modal .modal-content {
+            background: #0a0a0a;
+            border: none;
+            border-radius: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .fullscreen-modal .modal-body {
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+        .fullscreen-img {
+            max-width: 95vw;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+        .fullscreen-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: #ffefdf;
+            padding: 14px 20px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 500;
+            backdrop-filter: blur(8px);
+            width: 90%;
+            margin: 0 auto;
+            border-radius: 50px;
+            max-width: 90%;
+            left: 5%;
+        }
+        .fullscreen-caption strong {
+            font-size: 1.1rem;
+            color: #ffcf8a;
+        }
+        .close-fullscreen {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            font-size: 2rem;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            z-index: 1050;
+            transition: 0.2s;
+        }
+        .close-fullscreen:hover {
+            background: #b45f2b;
+        }
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            font-size: 2.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            z-index: 1060;
+            transition: 0.2s;
+        }
+        .nav-arrow:hover {
+            background: rgba(0,0,0,0.85);
+        }
+        .nav-left {
+            left: 20px;
+        }
+        .nav-right {
+            right: 20px;
+        }
+        /* подзаголовки */
+        .section-title {
+            border-left: 8px solid #b88b5a;
+            padding-left: 20px;
+            margin: 2rem 0 1.5rem 0;
+            font-weight: 700;
+        }
+        footer {
+            background: #2c241e;
+            color: #d9cdbc;
+            padding: 1.8rem;
+            margin-top: 3rem;
+            text-align: center;
+            border-radius: 24px 24px 0 0;
+        }
+        @media (max-width: 768px) {
+            .hero-caption { font-size: 0.9rem; }
+            .person-name { font-size: 1rem; }
+            .fullscreen-caption { font-size: 0.8rem; bottom: 10px; }
+            .nav-arrow { font-size: 1.8rem; padding: 0.2rem 0.8rem;}
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Основная обёртка -->
+    <div class="container-lg px-3 px-lg-4 py-3">
+        <!-- Заголовок клуба -->
+        <div class="text-center mb-4 mt-2">
+            <h1 class="display-5 fw-bold" style="color:#4a2f21;">Клуб почитателей В.П. Астафьева <span class="fw-light">«Затесь»</span></h1>
+            <p class="lead text-muted">15 лет памяти, творчества и вдохновения</p>
+            <hr class="w-25 mx-auto" style="height: 3px; background: #c29a6b; opacity: 0.5;">
+        </div>
+
+        <!-- ФОТО ПРЕДСЕДАТЕЛЯ (Валентина Майстренко) на максимальную ширину первым -->
+        <div class="hero-founder rounded-4 overflow-hidden mb-5">
+            <div class="hero-img-container">
+                <!-- локальное изображение: предполагается, что фото лежат в папке /images/ с названиями согласно списку.
+                     Для демонстрации используются плейсхолдеры, но вы замените src на реальные пути.
+                     В реальном проекте: "images/valentina_maistrenko.jpg" -->
+                <img src="images/maystrenko.jpg" 
+                     alt="Валентина Майстренко, председатель попечительского совета" 
+                     id="mainHeroImg"
+                     class="img-fluid w-100" 
+                     style="cursor:pointer"
+                     onclick="openFullscreenFromHero()">
+                <div class="hero-caption">
+                    <strong>Валентина Майстренко</strong> — председатель попечительского совета, главный редактор альманаха «Затесь», член Союза журналистов России
+                </div>
+            </div>
+        </div>
+
+        <!-- ГАЛЕРЕЯ: 30 фотографий членов попечительского совета (живые + Сарченко) -->
+        <h2 class="section-title">Попечительский совет клуба</h2>
+        <div class="row g-4" id="galleryGrid"></div>
+
+        <!-- Блок памяти ушедших участников -->
+        <div class="memory-section mt-5">
+            <h2 class="section-title mb-4" style="border-left-color: #a5673f;">Светлая память основателям и друзьям клуба</h2>
+            <div class="row g-4" id="memoryGrid"></div>
+            <div class="text-center mt-4 fst-italic text-secondary">
+                <i class="fas fa-leaf me-2"></i> Помним и чтим...
+            </div>
+        </div>
+
+        <!-- Текст о новом номере альманаха -->
+        <div class="bg-white p-4 rounded-4 shadow-sm mt-4 border">
+            <div class="row align-items-center">
+                <div class="col-md-2 text-center">
+                    <i class="fas fa-book-open fa-3x" style="color:#b87a4b;"></i>
+                </div>
+                <div class="col-md-10">
+                    <h4 class="fw-bold">Готовится к выпуску новый номер альманаха «Затесь»</h4>
+                    <p class="mb-0">Первый номер был посвящен 10-летию ухода Виктора Петровича Астафьева. Этот же выпуск приурочен к <strong>25-летию кончины великого писателя</strong>. Сохраняя традиции и открывая новые имена.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <i class="fas fa-camera-retro me-2"></i> Клуб «Затесь» • 15 лет • Все права защищены • Фотогалерея попечительского совета
+    </footer>
+
+    <!-- Модальное окно для полноэкранной презентации (Fullscreen) -->
+    <div class="modal fade fullscreen-modal" id="fullscreenModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="btn-close btn-close-white close-fullscreen" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    <button class="nav-arrow nav-left" id="prevSlideBtn"><i class="fas fa-chevron-left"></i></button>
+                    <button class="nav-arrow nav-right" id="nextSlideBtn"><i class="fas fa-chevron-right"></i></button>
+                    <img src="" alt="Fullscreen" class="fullscreen-img" id="fullscreenImage">
+                    <div class="fullscreen-caption" id="fullscreenCaption"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ---------- ДАННЫЕ ГАЛЕРЕИ (всего 30 фото: члены совета + 4 фото Сарченко. ИТОГО 14 живых + 4 Сарченко = 18, но надо 30.
+        // Поскольку условие требует галерею для 30 фотографий, добавим дубляж или дополнительные жанровые фото участников совета (каждый член совета может иметь фото окружения/жанр).
+        // В реальном проекте у каждого члена совета по одному фото + 4 Сарченко = всего 18 уникальных персон.
+        // Но для соблюдения "30 фотографий" мы сгенерируем каждому члену совета по одному фото, а для Сарченко 4 отдельных,
+        // а также создадим дополнительные фото с жанровыми моментами встреч и заседаний совета (используя локальные пути, но в демо используем плейсхолдеры с разными id).
+        // Таким образом получим ровно 30 элементов галереи, сохраняя подписи с именами/регалиями.
+        
+        // Список членов попечительского совета (живые + Сарченко отдельно 4 дубля) и ещё жанровые доп. фото.
+        // Формируем основной массив из 30 элементов.
+        
+        const members = [
+            { name: "Валентина Майстренко", regalia: "председатель попечительского совета, главный редактор альманаха «Затесь», член Союза журналистов России", imgKey: "valentina" },
+            { name: "Владимир Попов", regalia: "авиатор, друг семьи Астафьевых", imgKey: "popov" },
+            { name: "Герман Паштов", regalia: "народный художник России, действительный член Российской академии художеств, профессор, член редколлегии альманаха «Затесь»", imgKey: "pashtov" },
+            { name: "Александр Швецов", regalia: "фотохудожник", imgKey: "shvetsov" },
+            { name: "Игорь Миндалёв", regalia: "доцент Красноярского государственного агроуниверситета, член редколлегии альманаха «Затесь»", imgKey: "mindalev" },
+            { name: "Анна Киселёва", regalia: "заслуженная артистка России, солистка Красноярского государственного театра оперы и балета им. Д.А. Хворостовского", imgKey: "kiseleva" },
+            { name: "Татьяна Сёмкина", regalia: "актриса Красноярского государственного театра кукол", imgKey: "syomkina" },
+            { name: "Валерий Губайдуллин", regalia: "блогер, исследователь жизни и творчества В.П. Астафьева", imgKey: "gubaidullin" },
+            { name: "Нина Черняева", regalia: "Член Союза журналистов России, председатель Общественного совета Емельяновского района", imgKey: "chernyaeva" },
+            { name: "Татьяна Садырина", regalia: "кандидат филологических наук, исследователь творчества В.П. Астафьева", imgKey: "sadyrina" },
+            { name: "Евгения Андреева", regalia: "главный библиотекарь отдела литературы по искусству Государственной универсальной библиотеки Красноярского края", imgKey: "andreeva" },
+            { name: "Ксенья Багулина", regalia: "специалист по социальной защите", imgKey: "bagulina" },
+            { name: "Аделя Броднева", regalia: "заслуженный работник культуры России, экс-директор Литературного музея им. В.П. Астафьева", imgKey: "brodneva" }
+        ];
+        
+        // 4 фото Владимира Ивановича Сарченко с разными жанровыми изображениями (окружение)
+        const sarchenkoItems = [
+            { name: "Владимир Иванович Сарченко", regalia: "Благотворитель, заслуженный строитель России, доктор экономических наук, действительный член Российской инженерной академии, профессор, генеральный директор группы строительных компаний «Красстрой»", imgKey: "sarchenko1" },
+            { name: "Владимир Иванович Сарченко", regalia: "Благотворитель, заслуженный строитель России, доктор экономических наук, действительный член Российской инженерной академии, профессор, генеральный директор группы строительных компаний «Красстрой»", imgKey: "sarchenko2" },
+            { name: "Владимир Иванович Сарченко", regalia: "Благотворитель, заслуженный строитель России, доктор экономических наук, действительный член Российской инженерной академии, профессор, генеральный директор группы строительных компаний «Красстрой»", imgKey: "sarchenko3" },
+            { name: "Владимир Иванович Сарченко", regalia: "Благотворитель, заслуженный строитель России, доктор экономических наук, действительный член Российской инженерной академии, профессор, генеральный директор группы строительных компаний «Красстрой»", imgKey: "sarchenko4" }
+        ];
+        
+        // Дополнительные жанровые фото, чтобы набрать 30 (члены совета и гости). Всего 13 членов + 4 сарченко = 17, нужно 30 → добавим 13 дополнительных жанровых снимков заседаний/окружения членов совета.
+        // Эти дополнительные фото будут с подписями "Заседание клуба: [Имя и регалии]"
+       // const extraMembers = [
+       //     { name: "Валентина Майстренко (жанровое фото)", regalia: "председатель попечительского совета, главный редактор альманаха «Затесь», член Союза журналистов России" },
+       //     { name: "Владимир Попов (заседание клуба)", regalia: "авиатор, друг семьи Астафьевых" },
+       //     { name: "Герман Паштов в мастерской", regalia: "народный художник России, действительный член Российской академии художеств, профессор" },
+       //     { name: "Александр Швецов за работой", regalia: "фотохудожник" },
+       //     { name: "Игорь Миндалёв и альманах", regalia: "доцент Красноярского государственного агроуниверситета, член редколлегии «Затесь»" },
+       //     { name: "Анна Киселёва творческая встреча", regalia: "заслуженная артистка России" },
+       //     { name: "Татьяна Сёмкина в театре кукол", regalia: "актриса Красноярского театра кукол" },
+       //     { name: "Валерий Губайдуллин архив", regalia: "блогер, исследователь жизни и творчества В.П. Астафьева" },
+       //     { name: "Нина Черняева на мероприятии", regalia: "Член Союза журналистов России, председатель Общественного совета Емельяновского района" },
+       //     { name: "Татьяна Садырина лекция", regalia: "кандидат филологических наук, исследователь творчества Астафьева" },
+        //    { name: "Евгения Андреева в библиотеке", regalia: "главный библиотекарь отдела литературы по искусству" },
+        //    { name: "Ксенья Багулина социальная работа", regalia: "специалист по социальной защите" },
+        //    { name: "Аделя Броднева в музее", regalia: "заслуженный работник культуры России, экс-директор Литературного музея им. В.П. Астафьева" }
+       // ];
+       
+        // Формируем полный массив из 30 элементов: сначала основные члены совета (13), потом 4 Сарченко, потом 13 дополнительных = 30.
+        let galleryItems = [];
+        members.forEach(m => {
+            galleryItems.push({ name: m.name, regalia: m.regalia, type: "member", imgKey: m.imgKey });
+        });
+        
+       
+
+
+
+        sarchenkoItems.forEach(s => {
+            galleryItems.push({ name: s.name, regalia: s.regalia, type: "sarchenko", imgKey: s.imgKey });
+        });
+     //   extraMembers.forEach((ex, idx) => {
+     //       galleryItems.push({ name: ex.name, regalia: ex.regalia, type: "extra", imgKey: `extra_${idx}` });
+     //   });
+
+// Добавляем умерших членов совета в galleryItems для полноэкранного просмотра
+const deceasedMembersList = [
+    { name: "Светлана Александровна Сорокина", regalia: "заслуженная артистка России, актриса Красноярского драматического театра (1945-2022)", imgKey: "sorokina" },
+    { name: "Христина Евдокимовна Попова", regalia: "педагог, друг семьи Астафьевых (1952-2022)", imgKey: "popova_hristina" },
+    { name: "Валентина Георгиевна Швецова", regalia: "фотохудожник, хранитель музея Астафьева (1956-2022)", imgKey: "shvetsova" },
+    { name: "Анатолий Алексеевич Козлов", regalia: "профессор, друг В.П. Астафьева (1938-2023)", imgKey: "kozlov" },
+    { name: "Антонина Фёдоровна Пантелеева", regalia: "кандидат филологических наук (1938-2025)", imgKey: "panteleeva" }
+];
+
+deceasedMembersList.forEach(m => {
+    galleryItems.push({ name: m.name, regalia: m.regalia, type: "deceased", imgKey: m.imgKey });
+});
+
+
+        
+ // Добавляем их в galleryItems (например, после основных членов)
+ //       deceasedMembers.forEach(m => {
+ //       galleryItems.push({ name: m.name, regalia: m.regalia, type: "deceased", imgKey: m.imgKey });
+ //       });
+
+        // гарантируем 30
+        console.log("Общее количество фото галереи:", galleryItems.length);
+        
+        // Функция получения локального URL. В реальном проекте замените пути на ваши локальные изображения.
+        // Здесь для демонстрации используются плейсхолдеры с текстом (жанровые альбомные). Все изображения альбомные 16:10.
+        //function getImageUrl(key, personName) {
+            // Имитация локальных файлов: в реальности "images/valentina_maistrenko.jpg"
+            // Чтобы показать разные фото, используем placeholder с текстом имени.
+            //let encoded = encodeURIComponent(personName.substring(0, 30));
+            //return `https://placehold.co/800x500/e3cfb5/4a2f21?text=${encoded}+(жанровое+фото)`;
+function getImageUrl(key, personName) {
+    const imageFiles = {
+        'valentina': 'maystrenko.jpg',
+        'popov': 'popov.jpg',
+        'pashtov': 'pashtov.jpg',
+        'shvetsov': 'shvetsov.jpg',
+        'mindalev': 'mindalev.jpg',
+        'kiseleva': 'kiseleva.jpg',
+        'syomkina': 'syomkina.jpg',
+        'gubaidullin': 'gubaidullin.jpg',
+        'chernyaeva': 'chernyaeva.jpg',
+        'sadyrina': 'sadyrina.jpg',
+        'andreeva': 'andreeva.jpg',
+        'bagulina': 'bagulina.jpg',
+        'brodneva': 'brodneva.jpg',
+        'sarchenko1': 'sarchenko1.jpg',
+        'sarchenko2': 'sarchenko2.jpg',
+        'sarchenko3': 'sarchenko3.jpg',
+        'sarchenko4': 'sarchenko4.jpg',
+    'sorokina': 'sorokina.jpg',
+    'popova_hristina': 'popova_hristina.jpg',
+    'shvetsova': 'shvetsova.jpg',
+    'kozlov': 'kozlov.jpg',
+    'panteleeva': 'panteleeva.jpg',
+    };
+    
+    // Отладка: выводим в консоль, какой ключ ищется
+    console.log('Ищем фото для ключа:', key, 'Имя:', personName);
+    
+    if (key.startsWith('extra_')) {
+        const path = `images/extra_${key.replace('extra_', '')}.jpg`;
+        console.log('Путь для extra:', path);
+        return path;
+    }
+    
+    const filename = imageFiles[key] || `${key}.jpg`;
+    const fullPath = `images/${filename}`;
+    console.log('Итоговый путь:', fullPath);
+    
+    return fullPath;
+}
+
+
+
+        
+        
+        // Рендер галереи Bootstrap grid
+        const galleryGrid = document.getElementById("galleryGrid");
+        function renderGallery() {
+            galleryGrid.innerHTML = "";
+            galleryItems.forEach((item, index) => {
+                const col = document.createElement("div");
+                col.className = "col-sm-6 col-md-4 col-lg-3";
+                const imgSrc = getImageUrl(item.imgKey, item.name);
+                col.innerHTML = `
+                    <div class="gallery-card h-100" data-index="${index}">
+                        <img src="${imgSrc}" class="gallery-img" alt="${item.name}" loading="lazy">
+                        <div class="card-body-custom">
+                            <div class="person-name">${item.name}</div>
+                            <div class="person-regalia">${item.regalia}</div>
+                        </div>
+                    </div>
+                `;
+                galleryGrid.appendChild(col);
+                // событие клика для открытия полноэкранного режима
+                const cardDiv = col.querySelector('.gallery-card');
+                cardDiv.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openFullscreen(index);
+                });
+            });
+        }
+        
+        // Массив памяти (ушедшие)
+        const memoryPersons = [
+    { 
+        name: "Светлана Александровна Сорокина", 
+        regalia: "заслуженная артистка России, актриса Красноярского государственного драматического театра имени А.С. Пушкина (1945-2022)",
+        imgKey: "sorokina"  // добавляем ключ для фото
+    },
+    { 
+        name: "Христина Евдокимовна Попова", 
+        regalia: "педагог, друг семьи Астафьевых. (1952-2022)",
+        imgKey: "popova_hristina"  // добавляем ключ для фото
+    },
+    { 
+        name: "Валентина Георгиевна Швецова", 
+        regalia: "фотохудожник, хранитель библиотеки-музея В.П. Астафьева, исследователь творчества В.П. Астафьева (1956-2022)",
+        imgKey: "shvetsova"  // добавляем ключ для фото
+    },
+    { 
+        name: "Анатолий Алексеевич Козлов", 
+        regalia: "член-корреспондент международной Академии инвестиций и экономики строительства, кандидат технических наук, профессор, друг В.П. Астафьева (1938-2023)",
+        imgKey: "kozlov"  // добавляем ключ для фото
+    },
+    { 
+        name: "Антонина Фёдоровна Пантелеева", 
+        regalia: "кандидат филологических наук, исследователь творчества В.П. Астафьева. (1938-2025)",
+        imgKey: "panteleeva"  // добавляем ключ для фото
+    }
+];
+        
+        const memoryGrid = document.getElementById("memoryGrid");
+  
+
+        memoryPersons.forEach(m => {
+            const col = document.createElement("div");
+            col.className = "col-sm-6 col-md-4 col-lg-3";
+            col.innerHTML = `
+                <div class="card memory-card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">${m.name}</h5>
+                        <p class="card-text text-secondary small">${m.regalia}</p>
+                        <i class="fas fa-candle-holder text-warning-dark"></i>
+                    </div>
+                </div>
+            `;
+            memoryGrid.appendChild(col);
+        });
+        
+        // FULLSCREEN ЛОГИКА
+        let currentFullscreenIndex = 0;
+        const fullscreenModalEl = document.getElementById('fullscreenModal');
+        let bsModal = null;
+        const fullscreenImage = document.getElementById('fullscreenImage');
+        const fullscreenCaption = document.getElementById('fullscreenCaption');
+        
+        function openFullscreen(index) {
+            currentFullscreenIndex = index;
+            updateFullscreenContent();
+            if (!bsModal) {
+                bsModal = new bootstrap.Modal(fullscreenModalEl, { backdrop: true, keyboard: true });
+            }
+            bsModal.show();
+        }
+        
+        function openFullscreenFromHero() {
+            // фото председателя уже в hero, но для презентации открываем первую карточку (индекс 0) это Валентина Майстренко (первый член)
+            openFullscreen(0);
+        }
+        
+        function updateFullscreenContent() {
+            const item = galleryItems[currentFullscreenIndex];
+            if (!item) return;
+            const imgUrl = getImageUrl(item.imgKey, item.name);
+            fullscreenImage.src = imgUrl;
+            fullscreenCaption.innerHTML = `<strong>${item.name}</strong><br>${item.regalia}`;
+        }
+        
+        function nextSlide() {
+            if (galleryItems.length === 0) return;
+            currentFullscreenIndex = (currentFullscreenIndex + 1) % galleryItems.length;
+            updateFullscreenContent();
+        }
+        
+        function prevSlide() {
+            if (galleryItems.length === 0) return;
+            currentFullscreenIndex = (currentFullscreenIndex - 1 + galleryItems.length) % galleryItems.length;
+            updateFullscreenContent();
+        }
+        
+        // Привязка кнопок навигации в модалке (они создаются после загрузки DOM)
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('#nextSlideBtn')) {
+                nextSlide();
+            } else if (e.target.closest('#prevSlideBtn')) {
+                prevSlide();
+            }
+        });
+        
+        // клавиши вправо/влево
+        document.addEventListener('keydown', function(e) {
+            if (bsModal && fullscreenModalEl.classList.contains('show')) {
+                if (e.key === 'ArrowRight') {
+                    nextSlide();
+                    e.preventDefault();
+                } else if (e.key === 'ArrowLeft') {
+                    prevSlide();
+                    e.preventDefault();
+                } else if (e.key === 'Escape') {
+                    bsModal.hide();
+                }
+            }
+        });
+        
+        renderGallery();
+    </script>
+</body>
+</html>
